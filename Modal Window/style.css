@@ -1,0 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#btn {
+    position: absolute;
+}
+
+#modal_window {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#modal_window #content #exit {
+    position: relative;
+    left: 48%;
+    color: red;
+    cursor: pointer;
+}
+
+#modal_window #content {
+    background: #fff;
+    text-align: center;
+    width: 500px;
+    height: 200px;
+    border: 1px solid #000;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin: -100px 0 0 -250px;
+    z-index: 5;
+}
+
+#modal_window #exit_zone {
+    opacity: 0.5;
+    position: absolute;
+    z-index: 1;
+    background: #ccc;
+    width: 100%;
+    height: 100%;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}

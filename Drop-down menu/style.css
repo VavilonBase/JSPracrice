@@ -1,0 +1,22 @@
+nav {
+    display: flex;
+    flex-direction: row;
+}
+
+.menu {
+    width: 10%;
+    margin-left: 1%;
+}
+.title {
+    background: brown;
+    cursor: pointer;
+}
+
+.menu_item {
+    background: rgb(167, 109, 109);
+    cursor: pointer;
+}
+
+.menu_item:hover {
+    background: brown;
+}

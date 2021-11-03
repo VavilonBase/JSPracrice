@@ -1,0 +1,10 @@
+#rectangle {
+    width: 200px;
+    height: 100px;
+    margin-top: 50px;
+    background: red;
+}
+
+input {
+    margin-top: 20px;
+}
