@@ -25,6 +25,15 @@ const priceModal = $.modal({
     ]
 })
 
+const confirmModal = $.confirm({
+    title: 'Цена',
+    closable: true,
+    content: `
+        <p>Удалить элемент?</p>
+    `,
+    width: '200px'
+})
+
 //Создаем карточки
 const container = document.querySelector('.container')
 const cards = document.createElement('div')
@@ -33,26 +42,6 @@ fruits.forEach((fruit) => {
     cards.appendChild(createCard(fruit))
 })
 container.appendChild(cards)
-
-// const modal = $.modal({
-//     title: 'Artem Modal',
-//     closable: true,
-//     content: `
-//         <p>Modal is working</p>
-//         <p>Lorem ipsum dolor sit.</p>
-//     `,
-//     width: '200px',
-//     footerButtons: [
-//         {text: 'OK', type: 'primary', handler() {
-//                 console.log('Primary brn clicked')
-//                 modal.close()
-//             }},
-//         {text: 'CANCEL', type: 'danger', handler() {
-//                 console.log('DANGER brn clicked')
-//                 modal.close()
-//             }},
-//     ]
-// })
 
 function createCard(fruit) {
     let card = document.createElement('div')
@@ -72,7 +61,10 @@ function createCard(fruit) {
             priceModal.setContent(`<p>Цена равна: ${fruit.price}</p>`)
             priceModal.open()
         } else if (event.target.dataset.delete) {
-            event.target.parentNode.parentNode.parentNode.parentNode.removeChild(card)
+            confirmModal.setDeleteHandler(() => {
+                event.target.parentNode.parentNode.parentNode.parentNode.removeChild(card)
+            })
+            confirmModal.open()
         }
     }
     card.addEventListener('click', clickBtn)
