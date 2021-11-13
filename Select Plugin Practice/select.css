@@ -1,0 +1,66 @@
+#aselect {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.aselect {
+    width: 300px;
+}
+
+.aselect__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.aselect.open .aselect__overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.aselect__body {
+    width: 300px;
+}
+
+.aselect__input {
+    height: 30px;
+    border: 1px solid #000;
+    background: #fff;
+    border-radius: 5px;
+    padding: 0 5px;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.aselect__input-arrow {
+    font-size: 20px;
+}
+
+.aselect__dropdown {
+    display: none;
+    border: 1px solid #000;
+}
+
+.aselect.open .aselect__dropdown {
+    display: block;
+}
+.aselect__option {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 30px;
+    cursor: pointer;
+    background: #fff;
+}
+
+.aselect__option:hover, .aselect__selected {
+    background: #fda477;
+}
