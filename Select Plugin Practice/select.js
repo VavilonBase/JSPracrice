@@ -61,6 +61,8 @@ $.select = function(options) {
     const $aselectInputText = $aselect.querySelector('.aselect__input-text')
     //Input arrow
     const $aselectInputArrow = $aselect.querySelector('.aselect__input-arrow')
+    //Destroyed
+    let destroyed = false;
     //Function update option, return selected option
     function _updateOption(newSelect) {
         let aselectOptionIndex = null
@@ -84,9 +86,13 @@ $.select = function(options) {
     }
 
     function select(id) {
-        let selectedOption = _updateOption(id)
-        $aselectInputText.textContent = selectedOption.title
-        console.log(selectedOption)
+        if (!destroyed) {
+            let selectedOption = _updateOption(id)
+            $aselectInputText.textContent = selectedOption.title
+            console.log(selectedOption)
+        } else {
+            console.log('Select destroyed')
+        }
     }
 
 
@@ -98,15 +104,22 @@ $.select = function(options) {
 
     //Event Listeners
     const open = () => {
-        $aselect.classList.add('open')
+        if (!destroyed) {
+            $aselect.classList.add('open')
+        } else {
+            console.log('Select destroyed')
+        }
     }
 
     const close = () => {
-        $aselect.classList.remove('open')
+        if (!destroyed) {
+            $aselect.classList.remove('open')
+        } else {
+            console.log('Select destroyed')
+        }
     }
 
-    //Add Event Listener
-    $aselect.addEventListener('click', (event) => {
+    const clickListener = (event) => {
         const dataAselect = event.target.dataset.aselect
 
         const openSelect = () => {
@@ -127,7 +140,7 @@ $.select = function(options) {
                 if ($aselect.dataset.aselect === 'close') {
                     openSelect()
                 } else {
-                   closeSelect()
+                    closeSelect()
                 }
             } else if (dataAselect === 'overlay') {
                 //if click on overlay
@@ -141,15 +154,19 @@ $.select = function(options) {
             }
 
         }
-    })
+    }
 
+    //Add Event Listener
+    $aselect.addEventListener('click', clickListener)
 
     return {
         open,
         close,
         select,
         destroy: () => {
-            console.log('Destroy')
+            $aselect.removeEventListener('click', clickListener)
+            $aselect.parentNode.removeChild($aselect)
+            destroyed = true
         }
     }
 }
