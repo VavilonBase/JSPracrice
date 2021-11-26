@@ -19,7 +19,7 @@ const createElement = (tag, classes = [], content) => {
     return node
 }
 
-function noop(files) {}
+function noop(files, previewInfo) {}
 
 export function upload(selector, options = {}) {
     let files = []

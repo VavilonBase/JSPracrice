@@ -3779,7 +3779,203 @@ var version = "9.5.0";
  */
 
 (0, _app.registerVersion)(name, version, 'app');
-},{"@firebase/app":"node_modules/@firebase/app/dist/esm/index.esm2017.js"}],"node_modules/@firebase/storage/dist/index.esm2017.js":[function(require,module,exports) {
+},{"@firebase/app":"node_modules/@firebase/app/dist/esm/index.esm2017.js"}],"UploadClass.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Upload = void 0;
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _classPrivateMethodInitSpec(obj, privateSet) { _checkPrivateRedeclaration(obj, privateSet); privateSet.add(obj); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+var _setUp = /*#__PURE__*/new WeakSet();
+
+var _render = /*#__PURE__*/new WeakSet();
+
+var _createElement = /*#__PURE__*/new WeakSet();
+
+var _bytesToSize = /*#__PURE__*/new WeakSet();
+
+var _clearPreview = /*#__PURE__*/new WeakSet();
+
+var _noop = /*#__PURE__*/new WeakSet();
+
+var Upload = /*#__PURE__*/function () {
+  function Upload(selector) {
+    var _this$options$onUploa;
+
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    _classCallCheck(this, Upload);
+
+    _classPrivateMethodInitSpec(this, _noop);
+
+    _classPrivateMethodInitSpec(this, _clearPreview);
+
+    _classPrivateMethodInitSpec(this, _bytesToSize);
+
+    _classPrivateMethodInitSpec(this, _createElement);
+
+    _classPrivateMethodInitSpec(this, _render);
+
+    _classPrivateMethodInitSpec(this, _setUp);
+
+    this.options = options;
+    this.onUpload = (_this$options$onUploa = this.options.onUpload) !== null && _this$options$onUploa !== void 0 ? _this$options$onUploa : _classPrivateMethodGet(this, _noop, _noop2);
+    this.files = [];
+    this.input = document.querySelector(selector);
+    this.btnOpen = _classPrivateMethodGet(this, _createElement, _createElement2).call(this, 'button', ['btn'], 'Открыть');
+    this.btnUpload = _classPrivateMethodGet(this, _createElement, _createElement2).call(this, 'button', ['btn', 'primary'], 'Загрузить');
+    this.preview = _classPrivateMethodGet(this, _createElement, _createElement2).call(this, 'div', ['preview']);
+
+    _classPrivateMethodGet(this, _setUp, _setUp2).call(this);
+
+    _classPrivateMethodGet(this, _render, _render2).call(this);
+  }
+
+  _createClass(Upload, [{
+    key: "clickInputHandler",
+    value: function clickInputHandler(event) {
+      var _this = this;
+
+      if (!event.target.files.length) {
+        return;
+      }
+
+      this.files = Array.from(event.target.files);
+      this.preview.innerHTML = '';
+      this.files.forEach(function (file) {
+        if (!file.type.match('image')) return;
+        var reader = new FileReader();
+
+        reader.onload = function (ev) {
+          var src = ev.target.result;
+
+          _this.preview.insertAdjacentHTML('afterbegin', "\n                    <div class=\"preview-image\">\n                        <div class=\"preview-remove\" data-name=\"".concat(file.name, "\">&times;</div>\n                        <img src=\"").concat(src, "\" alt=\"").concat(file.name, "\">\n                        <div class=\"preview-info\">\n                            <span>").concat(file.name, "</span>\n                            ").concat(_classPrivateMethodGet(_this, _bytesToSize, _bytesToSize2).call(_this, file.size), "\n                        </div>\n                    </div>\n                "));
+        };
+
+        reader.readAsDataURL(file);
+      });
+    }
+  }, {
+    key: "clickBtnOpenHandler",
+    value: function clickBtnOpenHandler(event) {
+      this.input.click();
+    }
+  }, {
+    key: "clickBtnUploadHandler",
+    value: function clickBtnUploadHandler(event) {
+      this.preview.querySelectorAll('.preview-remove').forEach(function (e) {
+        return e.remove();
+      });
+      var previewInfo = this.preview.querySelectorAll('.preview-info');
+      previewInfo.forEach(_classPrivateMethodGet(this, _clearPreview, _clearPreview2));
+      this.onUpload(this.files, previewInfo);
+    }
+  }, {
+    key: "clickPreviewHandler",
+    value: function clickPreviewHandler(event) {
+      if (!event.target.dataset.name) {
+        return;
+      }
+
+      var name = event.target.dataset.name;
+      this.files = this.files.filter(function (file) {
+        return file.name !== name;
+      });
+      var block = event.target.closest('.preview-image');
+      block.classList.add('removing');
+      setTimeout(function () {
+        return block.remove();
+      }, 300);
+    }
+  }]);
+
+  return Upload;
+}();
+
+exports.Upload = Upload;
+
+function _setUp2() {
+  if (this.options.multi) {
+    this.input.setAttribute('multiple', true);
+  }
+
+  if (this.options.accept && Array.isArray(this.options.accept)) {
+    this.input.setAttribute('accept', this.options.accept.join(','));
+  }
+
+  this.clickBtnOpenHandler = this.clickBtnOpenHandler.bind(this);
+  this.clickInputHandler = this.clickInputHandler.bind(this);
+  this.clickBtnUploadHandler = this.clickBtnUploadHandler.bind(this);
+  this.clickPreviewHandler = this.clickPreviewHandler.bind(this);
+  this.input.addEventListener('change', this.clickInputHandler);
+  this.btnOpen.addEventListener('click', this.clickBtnOpenHandler);
+  this.btnUpload.addEventListener('click', this.clickBtnUploadHandler);
+  this.preview.addEventListener('click', this.clickPreviewHandler);
+}
+
+function _render2() {
+  this.input.insertAdjacentElement('afterend', this.preview);
+  this.input.insertAdjacentElement('afterend', this.btnUpload);
+  this.input.insertAdjacentElement('afterend', this.btnOpen);
+}
+
+function _createElement2(tag) {
+  var classes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  var content = arguments.length > 2 ? arguments[2] : undefined;
+  var node = document.createElement(tag);
+
+  if (classes.length) {
+    var _node$classList;
+
+    (_node$classList = node.classList).add.apply(_node$classList, _toConsumableArray(classes));
+  }
+
+  if (content) {
+    node.textContent = content;
+  }
+
+  return node;
+}
+
+function _bytesToSize2(bytes) {
+  var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  if (!bytes) return '0 Byte';
+  var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+  return Math.round(bytes / Math.pow(1024, i)) + ' ' + sizes[i];
+}
+
+function _clearPreview2(el) {
+  el.style.bottom = '4px';
+  el.innerHTML = "<div class=\"preview-info-progress\"></div>";
+}
+
+function _noop2(files, previewInfo) {}
+},{}],"node_modules/@firebase/storage/dist/index.esm2017.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8097,7 +8293,7 @@ var createElement = function createElement(tag) {
   return node;
 };
 
-function noop(files) {}
+function noop(files, previewInfo) {}
 
 function upload(selector) {
   var _options$onUpload;
@@ -8196,6 +8392,8 @@ function upload(selector) {
 
 var _app = require("firebase/app");
 
+var _UploadClass = require("./UploadClass");
+
 var _storage = require("firebase/storage");
 
 var _upload = require("./upload");
@@ -8212,7 +8410,7 @@ var firebaseConfig = {
 
 var app = (0, _app.initializeApp)(firebaseConfig);
 var storage = (0, _storage.getStorage)(app);
-(0, _upload.upload)('#file', {
+var up = new _UploadClass.Upload('#file', {
   multi: true,
   accept: ['.png', '.jpg', '.jpeg', '.gif'],
   onUpload: function onUpload(files, blocks) {
@@ -8234,8 +8432,32 @@ var storage = (0, _storage.getStorage)(app);
       });
     });
   }
-});
-},{"firebase/app":"node_modules/firebase/app/dist/index.esm.js","firebase/storage":"node_modules/firebase/storage/dist/index.esm.js","./upload":"upload.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+}); //
+// upload('#file', {
+//     multi: true,
+//     accept: ['.png', '.jpg', '.jpeg', '.gif'],
+//     onUpload(files, blocks) {
+//         files.forEach((file, index) => {
+//             console.log(`images/${file.name}`)
+//
+//             const storageRef = ref(storage,`images/${file.name}`)
+//             const uploadTask = uploadBytesResumable(storageRef, file)
+//             uploadTask.on('state_changed', snapshot => {
+//                 const percentage = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0) + '%'
+//                 const block = blocks[index].querySelector('.preview-info-progress')
+//                 block.textContent = percentage
+//                 block.style.width = percentage
+//             }, error => {
+//                 console.log(error)
+//             }, () => {
+//                 getDownloadURL(uploadTask.snapshot.ref).then(url => {
+//                     console.log('Download URL', url)
+//                 })
+//             })
+//         })
+//     }
+// })
+},{"firebase/app":"node_modules/firebase/app/dist/index.esm.js","./UploadClass":"UploadClass.js","firebase/storage":"node_modules/firebase/storage/dist/index.esm.js","./upload":"upload.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -8263,7 +8485,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55502" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49677" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
